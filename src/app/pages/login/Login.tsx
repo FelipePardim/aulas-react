@@ -1,6 +1,7 @@
 import { useRef, useState } from "react"
 import { InputLogin } from "./components/InputLogin";
 import { ButtonLogin } from "./components/ButtonLogin";
+import { useUsuarioLogado } from "../../shared/hooks";
 
 export const Login = () => {
     const inputPasswordRef = useRef<HTMLInputElement>(null);
@@ -11,6 +12,8 @@ export const Login = () => {
     const handleEntrar = () => {
         console.log(email, password);
     }
+
+    const { nomeDoUsuario } = useUsuarioLogado();
 
     return (
         <div>
@@ -30,9 +33,7 @@ export const Login = () => {
                     onChange={newValue => setPassword(newValue)}
                  />
 
-                {/* <button type="button" onClick={handleEntrar}>
-                    Entrar
-                </button> */}
+                 {nomeDoUsuario}
 
                 <ButtonLogin type="button" onClick={handleEntrar}>
                     Entrar
