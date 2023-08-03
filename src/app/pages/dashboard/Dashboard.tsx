@@ -23,18 +23,21 @@ export const Dashboard = () => {
 
             const value = e.currentTarget.value;
             e.currentTarget.value = '';
+            
+            if (lista.some((ListItem) => ListItem.title === value)) return;
 
-            setLista((oldLista) => {
-                if (oldLista.some((ListItem) => ListItem.title === value)) return oldLista;
-                return [
-                    ...lista,
-                    {
-                        id: oldLista.length,
-                        title: value,
-                        isCompleted: false
-                    }
-                ];
-            });
+            TarefaService.create({
+                title: value,
+                isCompleted: false
+            }).then((result) => {
+                if (result instanceof ApiException) {
+                    alert(result.message);
+                } else {
+                    setLista((oldLista) => {
+                        return [ ...oldLista, result ];
+                    });
+                }
+            })
         }
     }, [lista]);
 
