@@ -41,6 +41,30 @@ export const Dashboard = () => {
         }
     }, [lista]);
 
+    const handleToggleComplete = useCallback((id: number) => {
+        const tarefasToUpdate = lista.find((tarefa) => tarefa.id === id);
+        if (!tarefasToUpdate) return;
+
+        TarefaService.updateById(id, {
+            ...tarefasToUpdate,
+            isCompleted: !tarefasToUpdate.isCompleted
+        })
+            .then((result) => {
+                if (result instanceof ApiException) {
+                    alert(result.message);
+                } else {
+                    setLista(oldLista => {
+                        return oldLista.map(oldListItem => { 
+                            if (oldListItem.id === id) return result;
+                            
+                            return oldListItem;
+                        })
+                    })
+                }
+            })
+        
+    }, [lista])
+
     return (
         <div>
             <p>Lista</p>
@@ -56,17 +80,7 @@ export const Dashboard = () => {
                             <input 
                                 type="checkbox"
                                 checked={ListItem.isCompleted}
-                                onChange={() => {
-                                    setLista(oldLista => {
-                                        return oldLista.map(oldListItem => {
-                                            const newIsSelected = oldListItem.title === ListItem.title? !oldListItem.isCompleted : oldListItem.isCompleted
-                                            return {
-                                                ...oldListItem,
-                                                isSelected: newIsSelected
-                                            }
-                                        })
-                                    })
-                                }}
+                                onChange={() => handleToggleComplete(ListItem.id)}
                             />
                             {ListItem.title}
                         </li>
