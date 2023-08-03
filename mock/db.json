@@ -4,11 +4,6 @@
       "id": 1,
       "title": "tarefa 01",
       "isCompleted": false
-    },
-    {
-      "title": "tarefa 007",
-      "isCompleted": false,
-      "id": 2
     }
   ]
 }
